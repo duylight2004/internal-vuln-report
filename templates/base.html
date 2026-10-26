@@ -23,8 +23,8 @@
         }
 
         body {
-            /* Nền đỏ sáng kết hợp ảnh nền hero-bg.jpg */
-            background: linear-gradient(135deg, rgba(220, 38, 38, 0.88) 0%, rgba(185, 28, 28, 0.92) 50%, rgba(153, 27, 27, 0.96) 100%), 
+            /* Nền đỏ sáng trong suốt để ảnh nền hero-bg.jpg hiện rõ nét */
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.35) 0%, rgba(185, 28, 28, 0.45) 50%, rgba(136, 19, 19, 0.60) 100%), 
                         url("{{ url_for('static', filename='img/hero-bg.jpg') }}");
             background-size: cover;
             background-position: center top;
@@ -52,12 +52,12 @@
 
         /* Glass Cards trên nền đỏ sáng */
         .glass-card {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(26, 8, 8, 0.65);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
             border-radius: 20px;
-            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.4);
         }
 
         .glass-card-accent {
