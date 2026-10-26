@@ -33,18 +33,4 @@ INSERT INTO admin_secrets (id, flag) VALUES (1, 'FLAG{st0r3d_pr0c3dur3_1nj3ct10n
 INSERT INTO users (username, password_hash, role) VALUES
   ('admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'admin');
 
--- Stored Procedure: dynamic ORDER BY parameter injection
 DROP PROCEDURE IF EXISTS GetTopReporter;
-DELIMITER //
-CREATE PROCEDURE GetTopReporter(IN sortCol VARCHAR(128))
-BEGIN
-  SET @query = CONCAT(
-    'SELECT user_id, COUNT(*) as cnt FROM reports GROUP BY user_id ORDER BY ',
-    sortCol,
-    ' DESC LIMIT 5'
-  );
-  PREPARE stmt FROM @query;
-  EXECUTE stmt;
-  DEALLOCATE PREPARE stmt;
-END //
-DELIMITER ;

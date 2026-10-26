@@ -39,9 +39,23 @@ with open('src/schema.sql', 'r', encoding='utf-8') as f:
 
 cur = conn.cursor()
 cur.execute(sql)
-conn.commit()
 while cur.nextset():
     pass
+
+proc_sql = '''
+CREATE PROCEDURE GetTopReporter(IN sortCol VARCHAR(128))
+BEGIN
+  SET @query = CONCAT(
+    'SELECT user_id, COUNT(*) as cnt FROM reports GROUP BY user_id ',
+    sortCol
+  );
+  PREPARE stmt FROM @query;
+  EXECUTE stmt;
+  DEALLOCATE PREPARE stmt;
+END
+'''
+cur.execute(proc_sql)
+conn.commit()
 conn.close()
 print('[+] Schema and procedure initialized.')
 "

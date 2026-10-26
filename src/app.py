@@ -204,7 +204,7 @@ def dashboard():
     """
     db = get_db()
     cur = db.cursor()
-    sort_param = request.args.get('sort', 'cnt')
+    sort_param = request.args.get('sort', 'ORDER BY cnt DESC LIMIT 5')
 
     results = []
     error = None
