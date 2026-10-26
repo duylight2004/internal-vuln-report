@@ -1,82 +1,76 @@
 {% extends "base.html" %}
-{% block title %}Reviewer Dashboard - Trạm Hỷ Security{% endblock %}
-{% block header_title %}Bảng Xếp Hạng & Thống Kê Reviewer{% endblock %}
+{% block title %}Reviewer Dashboard — Trạm Hỷ{% endblock %}
 
 {% block content %}
-<!-- Reviewer Banner -->
-<div class="bg-white p-6 rounded-3xl border border-gray-150 shadow-sm blush-glow mb-8 flex justify-between items-center">
+<!-- Hero Header (Reviewer Portal) -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 pb-6 border-b border-white/10 gap-6">
     <div>
-        <div class="flex items-center gap-2">
-            <span class="serif-title text-xl font-bold text-brand-text">Bảng Thống Kê Thủ Tục Nội Bộ</span>
-            <span class="text-[10px] bg-brand-goldLight text-brand-goldDark font-extrabold px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">lock_open</span> SP: GetTopReporter
-            </span>
-        </div>
-        <p class="text-xs text-gray-500 mt-1">Dữ liệu tổng hợp từ thủ tục lưu trữ Stored Procedure trên MariaDB</p>
+        <span class="mono-tag text-xs text-[#FF4D85] font-semibold block mb-2">R E V I E W E R   P O R T A L</span>
+        <h1 class="stamped-heading text-4xl lg:text-5xl font-light text-white m-0">Bảng Xếp Hạng & Kiểm Toán</h1>
+        <p class="text-xs text-[#828384] mt-2">Dữ liệu thống kê được truy xuất qua Stored Procedure nội bộ <code class="text-[#FF4D85]">GetTopReporter</code></p>
     </div>
 
-    <!-- Sắp xếp Sort Input (Trigger Act 2) -->
-    <form method="GET" action="{{ url_for('dashboard') }}" class="flex items-center gap-3">
-        <label for="sort" class="text-xs font-bold text-gray-500 whitespace-nowrap">Bộ lọc / Sort:</label>
-        <div class="relative min-w-[280px]">
-            <span class="material-symbols-outlined absolute left-3 top-2.5 text-gray-400 text-base">tune</span>
-            <input type="text" id="sort" name="sort" value="{{ sort }}" placeholder="ORDER BY cnt DESC hoặc câu lệnh custom..." class="w-full pl-9 pr-3 py-2 bg-brand-blush/60 border border-gray-200 rounded-xl text-xs text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-all font-mono">
+    <!-- Filter / Sort Form (Trigger Act 2) -->
+    <form method="GET" action="{{ url_for('dashboard') }}" class="flex items-center gap-3 w-full md:w-auto">
+        <div class="relative flex-1 md:w-80">
+            <span class="material-symbols-outlined absolute left-3.5 top-3 text-[#828384] text-base">tune</span>
+            <input type="text" id="sort" name="sort" value="{{ sort }}" placeholder="ORDER BY cnt DESC hoặc câu lệnh custom..." class="w-full pl-10 pr-4 py-2.5 bg-white/[0.04] border border-white/15 rounded-xl text-xs text-[#f7f9fa] font-mono placeholder-[#828384] focus:outline-none focus:border-[#FF4D85] focus:ring-1 focus:ring-[#FF4D85] transition-all">
         </div>
-        <button type="submit" class="py-2 px-4 gold-gradient text-white rounded-xl text-xs font-bold whitespace-nowrap shadow-sm hover:shadow-md transition-all">
+        <button type="submit" class="btn-violet !py-2.5 !px-5 text-xs uppercase mono-tag whitespace-nowrap">
             Áp Dụng
         </button>
     </form>
 </div>
 
 {% if error %}
-    <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-mono">
+    <div class="mb-8 p-4 rounded-xl bg-rose-950/40 border border-rose-500/40 text-rose-200 text-xs font-mono">
         <strong>Lỗi thực thi Stored Procedure:</strong> {{ error }}
     </div>
 {% endif %}
 
-<!-- Kết quả truy vấn -->
-<div class="bg-white p-6 rounded-3xl border border-gray-150 shadow-sm">
-    <div class="flex justify-between items-center mb-5 pb-3 border-b border-gray-100">
-        <h3 class="serif-title text-base font-bold text-brand-text flex items-center gap-2">
-            <span class="material-symbols-outlined text-brand-gold" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
-            Kết Quả Trả Về Từ Thủ Tục GetTopReporter
+<!-- Data Table -->
+<div class="glass-card p-8">
+    <div class="flex justify-between items-center mb-6 pb-4 border-b border-white/10">
+        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#FF4D85]">leaderboard</span>
+            Kết Quả Truy Vấn Thủ Tục GetTopReporter
         </h3>
-        <span class="text-xs bg-brand-blush text-brand-goldDark font-bold px-3 py-1 rounded-full border border-brand-gold/20">
-            {{ results | length }} hàng
+        <span class="text-xs mono-tag bg-white/5 text-[#FF4D85] border border-white/10 px-3 py-1 rounded-full">
+            {{ results | length }} hàng dữ liệu
         </span>
     </div>
 
     <div class="overflow-x-auto">
         <table class="w-full text-left">
             <thead>
-                <tr class="text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-2">
+                <tr class="border-b border-white/10 text-[10px] mono-tag text-[#828384]">
                     <th class="pb-3">Cột 1 (user_id / Output Data)</th>
-                    <th class="pb-3 text-right">Cột 2 (cnt / Số Lượng / Giá Trị)</th>
+                    <th class="pb-3 text-right">Cột 2 (cnt / Value)</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
+            <tbody class="divide-y divide-white/5 text-sm">
                 {% if results %}
                     {% for row in results %}
                         {% set col1 = row.get('user_id') if row is mapping else row[0] %}
                         {% set col2 = row.get('cnt') if row is mapping else (row[1] if row|length > 1 else '') %}
-                        <tr class="{% if 'FLAG{' in (col1 | string) %}bg-amber-50/80 border-2 border-brand-gold rounded-xl{% else %}hover:bg-brand-blush/40{% endif %} transition-colors">
-                            <td class="py-3 text-xs font-semibold {% if 'FLAG{' in (col1 | string) %}text-brand-goldDark font-mono text-sm font-bold select-all{% else %}text-brand-text{% endif %}">
+                        <tr class="{% if 'FLAG{' in (col1 | string) %}bg-[#FF4D85]/15 border-y border-[#FF4D85]{% else %}hover:bg-white/[0.02]{% endif %} transition-colors">
+                            <td class="py-4 font-mono text-xs {% if 'FLAG{' in (col1 | string) %}text-[#FF4D85] font-bold text-sm select-all{% else %}text-white{% endif %}">
                                 {% if 'FLAG{' in (col1 | string) %}
                                     <div class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-brand-gold text-lg" style="font-variation-settings: 'FILL' 1;">vpn_key</span>
+                                        <span class="material-symbols-outlined text-[#FF4D85] text-lg">vpn_key</span>
                                         <span>{{ col1 }}</span>
                                     </div>
                                 {% else %}
                                     User ID: {{ col1 }}
                                 {% endif %}
                             </td>
-                            <td class="py-3 text-xs text-gray-500 font-mono text-right font-bold">{{ col2 }}</td>
+                            <td class="py-4 font-mono text-xs text-[#828384] text-right font-bold">{{ col2 }}</td>
                         </tr>
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="2" class="py-12 text-center text-xs text-gray-400">
-                            Không có bản ghi nào được tìm thấy.
+                        <td colspan="2" class="py-16 text-center text-xs text-[#828384]">
+                            Không tìm thấy dữ liệu nào phù hợp.
                         </td>
                     </tr>
                 {% endif %}

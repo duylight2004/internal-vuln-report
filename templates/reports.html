@@ -1,124 +1,119 @@
 {% extends "base.html" %}
-{% block title %}Báo Cáo Của Tôi - Trạm Hỷ Security{% endblock %}
-{% block header_title %}Quản Lý Báo Cáo Sự Cố{% endblock %}
+{% block title %}Báo Cáo Sự Cố — Trạm Hỷ{% endblock %}
 
 {% block content %}
-<!-- Stats Row (4 cards Trạm Hỷ) -->
-<section class="grid grid-cols-4 gap-6 mb-8">
-    <div class="bg-white p-5 rounded-2xl border border-gray-150 shadow-sm flex flex-col justify-between">
-        <div>
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Báo cáo đã gửi</p>
-            <h3 class="text-xl font-bold text-brand-text mt-1">{{ reports | length }} báo cáo</h3>
-        </div>
-        <p class="text-[9px] text-green-600 font-semibold mt-4 flex items-center gap-0.5">
-            <span class="material-symbols-outlined text-xs">verified</span> Hệ thống ghi nhận hợp lệ
-        </p>
+<!-- Hero Header (Quang's GrandSlang Drama) -->
+<div class="flex justify-between items-end mb-10 pb-6 border-b border-white/10">
+    <div>
+        <span class="mono-tag text-xs text-[#FF4D85] font-semibold block mb-2">V U L N E R A B I L I T Y   M O N I T O R</span>
+        <h1 class="stamped-heading text-4xl lg:text-5xl font-light text-white m-0">Quản lý Báo Cáo & Nhật Ký</h1>
     </div>
-    
-    <div class="bg-white p-5 rounded-2xl border border-gray-150 shadow-sm flex flex-col justify-between relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-24 h-24 bg-brand-gold/10 rounded-full blur-xl -mr-8 -mt-8"></div>
-        <div class="relative z-10">
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Đặc quyền tài khoản</p>
-            <h3 class="text-xl font-bold text-brand-goldDark mt-1 uppercase">{{ role }}</h3>
-        </div>
-        <p class="text-[9px] text-gray-400 mt-4">Phân quyền kiểm toán bảo mật</p>
+    <div>
+        <form method="POST" action="{{ url_for('export_log') }}">
+            <button type="submit" class="ghost-pill-btn !border-[#FF4D85] !text-white hover:!bg-[#FF4D85] hover:!text-black !py-3 !px-6">
+                <span class="material-symbols-outlined text-lg text-[#FF4D85]">cloud_upload</span>
+                <span>Xuất Nhật Ký Hoạt Động (Export Log)</span>
+            </button>
+        </form>
     </div>
-    
-    <div class="bg-white p-5 rounded-2xl border border-gray-150 shadow-sm flex flex-col justify-between">
-        <div>
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Bảo chứng an ninh</p>
-            <h3 class="text-xl font-bold text-brand-text mt-1">Trạm Hỷ Shield</h3>
-        </div>
-        <p class="text-[9px] text-brand-goldDark font-bold mt-4 flex items-center gap-1">
-            <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">shield</span> Giám sát thời gian thực
-        </p>
-    </div>
-    
-    <div class="bg-white p-5 rounded-2xl border border-gray-150 shadow-sm flex flex-col justify-between">
-        <div>
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Trạng thái Audit</p>
-            <h3 class="text-xl font-bold text-green-600 mt-1">Đang hoạt động</h3>
-        </div>
-        <p class="text-[9px] text-gray-400 mt-4">Nhật ký sẵn sàng xuất kiểm toán</p>
-    </div>
-</section>
+</div>
 
-<!-- Flag 1 Banner if elevated to reviewer -->
-{% if flag1 %}
-<div class="mb-8 p-6 bg-gradient-to-r from-amber-50 via-white to-green-50 rounded-2xl border-2 border-brand-gold shadow-md blush-glow">
-    <div class="flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-full gold-gradient flex items-center justify-center text-white shadow-md">
-                <span class="material-symbols-outlined text-2xl">military_tech</span>
-            </div>
-            <div>
-                <h3 class="serif-title text-lg font-bold text-brand-text">Chúc mừng! Bạn đã được cấp đặc quyền Reviewer (Act 1 Solved)</h3>
-                <p class="text-xs text-gray-500">Mã cờ bí mật của chuỗi khai thác Second-order Stacked Query SQLi:</p>
-            </div>
+<!-- Metrics Row (3 cards like VendorDashboard.tsx) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+    <!-- Metric 1 -->
+    <div class="glass-card p-8">
+        <div class="flex justify-between items-center mb-6 text-[#828384]">
+            <span class="mono-tag text-xs">Tổng Báo Cáo Đã Gửi</span>
+            <span class="material-symbols-outlined text-xl text-white">assignment</span>
         </div>
-        <a href="{{ url_for('dashboard') }}" class="px-5 py-2.5 gold-gradient text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm flex items-center gap-2 hover:shadow-md transition-all">
-            <span>Mở Reviewer Dashboard</span>
-            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        <div class="stamped-heading text-5xl text-white mb-2">{{ reports | length }}</div>
+        <div class="text-xs text-[#FF4D85] flex items-center gap-1.5 font-medium">
+            <span class="material-symbols-outlined text-sm">trending_up</span> Dữ liệu ghi nhận thời gian thực
+        </div>
+    </div>
+
+    <!-- Metric 2 (Accent Card) -->
+    <div class="glass-card-accent p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-[#FF4D85]/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+        <div class="flex justify-between items-center mb-6 text-[#FF4D85]">
+            <span class="mono-tag text-xs font-bold">Đặc Quyền Kiểm Toán</span>
+            <span class="material-symbols-outlined text-xl">verified_user</span>
+        </div>
+        <div class="stamped-heading text-5xl text-[#FF4D85] mb-2 uppercase">{{ role }}</div>
+        <div class="text-xs text-[#828384]">Được bảo chứng bởi Trạm Hỷ Security</div>
+    </div>
+
+    <!-- Metric 3 -->
+    <div class="glass-card p-8">
+        <div class="flex justify-between items-center mb-6 text-[#828384]">
+            <span class="mono-tag text-xs">Cơ Chế Bảo Vệ</span>
+            <span class="material-symbols-outlined text-xl text-white">security</span>
+        </div>
+        <div class="stamped-heading text-4xl text-white mb-2 leading-tight">Milestone Pay</div>
+        <div class="text-xs text-[#828384]">Bảo chứng giao dịch & dữ liệu an toàn</div>
+    </div>
+</div>
+
+<!-- Flag 1 Banner if elevated to Reviewer -->
+{% if flag1 %}
+<div class="glass-card-accent p-8 mb-10 relative overflow-hidden bg-gradient-to-r from-[#FF4D85]/15 via-black/80 to-[#FF4D85]/10">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+            <span class="mono-tag text-xs text-[#FF4D85] font-bold block mb-1">A C T   1   S O L V E D</span>
+            <h2 class="stamped-heading text-3xl text-white m-0">Đặc quyền Reviewer đã được kích hoạt!</h2>
+            <p class="text-xs text-[#828384] mt-1">Bạn đã khai thác thành công lỗ hổng Second-order Stacked Query SQL Injection.</p>
+        </div>
+        <a href="{{ url_for('dashboard') }}" class="btn-violet text-xs uppercase mono-tag !py-3 !px-6 whitespace-nowrap">
+            <span>Truy Cập Reviewer Dashboard</span>
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
         </a>
     </div>
-    <div class="mt-4 p-3 bg-white/80 rounded-xl border border-brand-gold/30 font-mono text-xs text-brand-goldDark font-bold select-all text-center">
+    <div class="mt-6 p-4 bg-black/60 rounded-xl border border-[#FF4D85]/40 font-mono text-sm text-[#FF4D85] font-bold text-center select-all">
         {{ flag1 }}
     </div>
 </div>
 {% endif %}
 
-<div class="grid grid-cols-12 gap-8">
-    <!-- Cột trái: Quản lý Nhật ký & Form Nộp (5 cols) -->
-    <div class="col-span-5 space-y-6">
-        <!-- Card Export Log (Trigger Act 1) -->
-        <div class="bg-white p-6 rounded-2xl border border-gray-150 shadow-sm">
-            <div class="flex items-center gap-2 mb-3">
-                <span class="material-symbols-outlined text-brand-gold text-xl" style="font-variation-settings: 'FILL' 1;">cloud_sync</span>
-                <h3 class="serif-title text-base font-bold text-brand-text">Xuất Nhật Ký Hoạt Động</h3>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <!-- Form Nộp Báo Cáo (5 cols) -->
+    <div class="lg:col-span-5">
+        <div class="glass-card p-8">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="material-symbols-outlined text-[#FF4D85] text-xl">add_moderator</span>
+                <h3 class="text-xl font-bold text-white">Nộp Báo Cáo Lỗ Hổng</h3>
             </div>
-            <p class="text-xs text-gray-500 leading-relaxed mb-4">
-                Đồng bộ và cập nhật mốc thời gian hoạt động của tài khoản này vào cơ sở dữ liệu kiểm toán hệ thống.
+            <p class="text-xs text-[#828384] mb-6 leading-relaxed">
+                Gửi thông tin lỗ hổng bảo mật trực tiếp tới ban thẩm định an ninh Trạm Hỷ.
             </p>
-            <form method="POST" action="{{ url_for('export_log') }}">
-                <button type="submit" class="w-full py-2.5 px-4 bg-brand-blush hover:bg-brand-goldLight text-brand-goldDark border border-brand-gold/40 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all">
-                    <span class="material-symbols-outlined text-base">upload_file</span>
-                    <span>Xuất Nhật Ký (Export Activity Log)</span>
-                </button>
-            </form>
-        </div>
 
-        <!-- Form Nộp Báo Cáo Mới -->
-        <div class="bg-white p-6 rounded-2xl border border-gray-150 shadow-sm">
-            <div class="flex items-center gap-2 mb-3">
-                <span class="material-symbols-outlined text-brand-gold text-xl" style="font-variation-settings: 'FILL' 1;">add_circle</span>
-                <h3 class="serif-title text-base font-bold text-brand-text">Nộp Báo Cáo Lỗ Hổng</h3>
-            </div>
-            <form method="POST" action="{{ url_for('reports') }}" class="space-y-4">
+            <form method="POST" action="{{ url_for('reports') }}" class="space-y-5">
                 <div>
-                    <label for="title" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Tiêu Đề Lỗ Hổng</label>
-                    <input type="text" id="title" name="title" required placeholder="ví dụ: SQL Injection in Export Service..." class="w-full px-4 py-2 bg-brand-blush/60 border border-gray-200 rounded-xl text-xs text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-all">
+                    <label for="title" class="block text-[11px] mono-tag text-[#828384] mb-2 font-medium">Tiêu Đề Lỗ Hổng</label>
+                    <input type="text" id="title" name="title" required placeholder="ví dụ: SQL Injection in Export Service..." class="w-full px-4 py-3 bg-white/[0.04] border border-white/15 rounded-xl text-sm text-[#f7f9fa] placeholder-[#828384] focus:outline-none focus:border-[#FF4D85] focus:ring-1 focus:ring-[#FF4D85] transition-all">
                 </div>
+
                 <div>
-                    <label for="description" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Mô Tả Chi Tiết</label>
-                    <textarea id="description" name="description" rows="4" placeholder="mô tả vị trí phát hiện và bằng chứng khai thác..." class="w-full px-4 py-2 bg-brand-blush/60 border border-gray-200 rounded-xl text-xs text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-all"></textarea>
+                    <label for="description" class="block text-[11px] mono-tag text-[#828384] mb-2 font-medium">Mô Tả Chi Tiết</label>
+                    <textarea id="description" name="description" rows="4" placeholder="mô tả phương thức tấn công và bằng chứng thực nghiệm..." class="w-full px-4 py-3 bg-white/[0.04] border border-white/15 rounded-xl text-sm text-[#f7f9fa] placeholder-[#828384] focus:outline-none focus:border-[#FF4D85] focus:ring-1 focus:ring-[#FF4D85] transition-all"></textarea>
                 </div>
-                <button type="submit" class="w-full py-2.5 px-4 gold-gradient text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm flex items-center justify-center gap-2 hover:shadow-md transition-all">
+
+                <button type="submit" class="btn-violet w-full justify-center !py-3.5 text-xs uppercase mono-tag">
                     <span>Gửi Báo Cáo Kiểm Toán</span>
-                    <span class="material-symbols-outlined text-sm">send</span>
+                    <span class="material-symbols-outlined text-base">send</span>
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Cột phải: Bảng Danh Sách Báo Cáo (7 cols) -->
-    <div class="col-span-7">
-        <div class="bg-white p-6 rounded-2xl border border-gray-150 shadow-sm">
-            <div class="flex justify-between items-center mb-5 pb-3 border-b border-gray-100">
-                <h3 class="serif-title text-base font-bold text-brand-text flex items-center gap-2">
-                    <span class="material-symbols-outlined text-brand-gold">format_list_bulleted</span>
-                    Báo Cáo Đã Ghi Nhận
+    <!-- Danh Sách Báo Cáo (7 cols) -->
+    <div class="lg:col-span-7">
+        <div class="glass-card p-8">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b border-white/10">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[#FF4D85]">list_alt</span>
+                    Danh Sách Báo Cáo Của Tôi
                 </h3>
-                <span class="text-xs bg-brand-blush text-brand-goldDark font-bold px-3 py-1 rounded-full border border-brand-gold/20">
+                <span class="text-xs mono-tag bg-white/5 text-[#FF4D85] border border-white/10 px-3 py-1 rounded-full">
                     {{ reports | length }} bản ghi
                 </span>
             </div>
@@ -127,37 +122,37 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead>
-                            <tr class="text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-2">
-                                <th class="pb-3">ID</th>
-                                <th class="pb-3">Tiêu đề & Nội dung</th>
-                                <th class="pb-3">Trạng thái</th>
-                                <th class="pb-3 text-right">Thời gian</th>
+                            <tr class="border-b border-white/10 text-[10px] mono-tag text-[#828384]">
+                                <th class="pb-3">Mã ID</th>
+                                <th class="pb-3">Tiêu Đề</th>
+                                <th class="pb-3">Trạng Thái</th>
+                                <th class="pb-3 text-right">Thời Gian</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
+                        <tbody class="divide-y divide-white/5 text-sm">
                             {% for r in reports %}
-                                <tr class="hover:bg-brand-blush/40 transition-colors">
-                                    <td class="py-3 text-xs font-mono text-gray-400">#{{ r.id }}</td>
-                                    <td class="py-3">
-                                        <div class="text-xs font-bold text-brand-text">{{ r.title }}</div>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="py-4 font-mono text-xs text-[#828384]">#{{ r.id }}</td>
+                                    <td class="py-4">
+                                        <div class="font-semibold text-white">{{ r.title }}</div>
                                         {% if r.description %}
-                                            <div class="text-[11px] text-gray-400 mt-0.5 line-clamp-2">{{ r.description }}</div>
+                                            <div class="text-xs text-[#828384] mt-0.5 line-clamp-2">{{ r.description }}</div>
                                         {% endif %}
                                     </td>
-                                    <td class="py-3">
-                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">
-                                            {{ r.status | upper }}
+                                    <td class="py-4">
+                                        <span class="text-[10px] mono-tag px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                                            {{ r.status }}
                                         </span>
                                     </td>
-                                    <td class="py-3 text-[11px] text-gray-400 text-right">{{ r.created_at }}</td>
+                                    <td class="py-4 text-xs font-mono text-[#828384] text-right">{{ r.created_at }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
             {% else %}
-                <div class="text-center py-12 text-gray-400">
-                    <span class="material-symbols-outlined text-4xl text-gray-300 mb-2">inbox</span>
+                <div class="text-center py-16 text-[#828384]">
+                    <span class="material-symbols-outlined text-4xl text-white/20 mb-2">inbox</span>
                     <p class="text-xs">Chưa có báo cáo nào được ghi nhận cho tài khoản này.</p>
                 </div>
             {% endif %}
