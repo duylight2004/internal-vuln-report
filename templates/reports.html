@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Báo cáo của tôi - IVRS Portal{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <!-- Cột trái: Thông tin tài khoản & Nút Action -->
+  <div class="col-lg-4">
+    <div class="card card-custom p-4 shadow-sm mb-4">
+      <h5 class="fw-bold font-heading mb-3">Tài Khoản & Đặc Quyền</h5>
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <span class="text-muted">Tên tài khoản:</span>
+        <span class="fw-bold text-light">{{ session.get('username') }}</span>
+      </div>
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <span class="text-muted">Vai trò hiện tại:</span>
+        <span class="badge badge-role role-{{ role }}">{{ role | upper }}</span>
+      </div>
+
+      {% if flag1 %}
+        <div class="alert alert-success border-success mt-3 mb-3 p-3">
+          <div class="fw-bold mb-1">🎉 Act 1 Solved! Reviewer Privilege Granted</div>
+          <code class="d-block text-break user-select-all">{{ flag1 }}</code>
+        </div>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-info w-100 mb-3 fw-bold">
+          Truy cập Reviewer Dashboard ➔
+        </a>
+      {% endif %}
+
+      <hr class="border-secondary my-3">
+
+      <h6 class="fw-semibold text-secondary small mb-2">QUẢN LÝ NHẬT KÝ</h6>
+      <p class="text-muted small">Xuất bản ghi nhật ký hoạt động của tài khoản này vào cơ sở dữ liệu kiểm toán hệ thống.</p>
+      <form method="POST" action="{{ url_for('export_log') }}">
+        <button type="submit" class="btn btn-outline-warning w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2">
+          <span>📤</span>
+          <span>Xuất Nhật Ký Hoạt Động (Export Log)</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Form nộp báo cáo -->
+    <div class="card card-custom p-4 shadow-sm">
+      <h5 class="fw-bold font-heading mb-3">Nộp Báo Cáo Mới</h5>
+      <form method="POST" action="{{ url_for('reports') }}">
+        <div class="mb-3">
+          <label for="title" class="form-label text-secondary small fw-semibold">TIÊU ĐỀ LỖ HỔNG</label>
+          <input type="text" class="form-control form-control-custom" id="title" name="title" required placeholder="Ví dụ: SQL Injection in Export Service">
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label text-secondary small fw-semibold">MÔ TẢ CHI TIẾT</label>
+          <textarea class="form-control form-control-custom" id="description" name="description" rows="3" placeholder="Mô tả vector tấn công và bằng chứng..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 fw-semibold">Gửi Báo Cáo</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Cột phải: Danh sách báo cáo -->
+  <div class="col-lg-8">
+    <div class="card card-custom p-4 shadow-sm">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold font-heading m-0">Danh Sách Báo Cáo Đã Gửi</h5>
+        <span class="badge bg-secondary">{{ reports | length }} báo cáo</span>
+      </div>
+
+      {% if reports %}
+        <div class="table-responsive">
+          <table class="table table-dark table-hover align-middle">
+            <thead>
+              <tr class="text-secondary small">
+                <th scope="col">ID</th>
+                <th scope="col">Tiêu đề</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Thời gian</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in reports %}
+                <tr>
+                  <td class="text-muted small">#{{ r.id }}</td>
+                  <td class="fw-semibold text-light">
+                    {{ r.title }}
+                    {% if r.description %}
+                      <div class="text-muted small fw-normal">{{ r.description }}</div>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <span class="badge bg-warning text-dark">{{ r.status }}</span>
+                  </td>
+                  <td class="text-muted small">{{ r.created_at }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="text-center py-5 text-muted">
+          <p class="mb-0">Chưa có báo cáo nào được ghi nhận cho tài khoản này.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

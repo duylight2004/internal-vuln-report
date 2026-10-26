@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}IVRS - Internal Vulnerability Report System{% endblock %}</title>
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-dark text-light min-vh-100 d-flex flex-column">
+  <!-- Debug System Signature: IVRS Core v2.4 (SP: GetTopReporter, Table: admin_secrets) -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-surface border-bottom border-secondary-subtle py-3">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2 fw-bold font-heading text-gradient" href="{{ url_for('index') }}">
+        <span class="shield-icon">🛡️</span>
+        <span>IVRS Portal</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-center gap-2">
+          {% if session.get('user_id') %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('reports') }}">📋 Báo cáo</a>
+            </li>
+            {% if session.get('role') in ('reviewer', 'admin') %}
+              <li class="nav-item">
+                <a class="nav-link btn-glow-sm" href="{{ url_for('dashboard') }}">📊 Reviewer Dashboard</a>
+              </li>
+            {% endif %}
+            <li class="nav-item ms-lg-2">
+              <span class="badge badge-role role-{{ session.get('role') }}">{{ session.get('role') | upper }}</span>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-outline-danger btn-sm ms-2" href="{{ url_for('logout') }}">Đăng xuất</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('login') }}">Đăng nhập</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-primary btn-sm px-3" href="{{ url_for('register') }}">Đăng ký</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-4 flex-grow-1">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mb-4">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer mt-auto py-3 bg-surface border-top border-secondary-subtle text-center text-muted small">
+    <div class="container">
+      Internal Vulnerability Report System &bull; Cyber Security Division &bull; Build 2026.10
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
