@@ -1,31 +1,46 @@
 {% extends "base.html" %}
-{% block title %}Đăng ký tài khoản - IVRS Portal{% endblock %}
+{% block title %}Đăng Ký - Trạm Hỷ Security{% endblock %}
+{% block header_title %}Đăng Ký Thành Viên{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center pt-4">
-  <div class="col-md-5 col-lg-4">
-    <div class="card card-custom p-4 shadow-lg">
-      <div class="text-center mb-4">
-        <h3 class="fw-bold font-heading">Đăng Ký</h3>
-        <p class="text-muted small">Tạo tài khoản thành viên báo cáo lỗ hổng</p>
-      </div>
-      <form method="POST" action="{{ url_for('register') }}">
-        <div class="mb-3">
-          <label for="username" class="form-label text-secondary small fw-semibold">TÊN ĐĂNG NHẬP</label>
-          <input type="text" class="form-control form-control-custom" id="username" name="username" required autofocus placeholder="tối đa 30 ký tự khuyến nghị...">
-          <div class="form-text text-muted small">Gợi ý: Tên đăng nhập được dùng làm định danh tác giả trên các báo cáo và nhật ký xuất dữ liệu.</div>
+<div class="flex justify-center items-center py-8">
+    <div class="w-full max-w-md bg-white p-8 rounded-3xl border border-gray-150 shadow-lg blush-glow relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-36 h-36 bg-brand-gold/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+
+        <div class="text-center mb-6 relative z-10">
+            <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" class="w-14 h-14 mx-auto rounded-full object-cover border-2 border-brand-gold/40 shadow-sm mb-3" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=100'">
+            <h2 class="serif-title text-2xl font-bold text-brand-text">Đăng Ký Tài Khoản</h2>
+            <p class="text-xs text-gray-400 mt-1">Gia nhập đội ngũ báo cáo sự cố an ninh Trạm Hỷ</p>
         </div>
-        <div class="mb-4">
-          <label for="password" class="form-label text-secondary small fw-semibold">MẬT KHẨU</label>
-          <input type="password" class="form-control form-control-custom" id="password" name="password" required placeholder="nhập mật khẩu...">
+
+        <form method="POST" action="{{ url_for('register') }}" class="space-y-4 relative z-10">
+            <div>
+                <label for="username" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Tên Đăng Nhập</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-gray-400 text-lg">badge</span>
+                    <input type="text" id="username" name="username" required autofocus placeholder="tên định danh người báo cáo..." class="w-full pl-11 pr-4 py-2.5 bg-brand-blush/60 border border-gray-200 rounded-xl text-xs text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-all">
+                </div>
+                <p class="text-[10px] text-gray-400 mt-1.5 italic">Khuyến nghị: Tên đăng nhập được dùng làm định danh tác giả trên các báo cáo và nhật ký xuất dữ liệu.</p>
+            </div>
+
+            <div>
+                <label for="password" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Mật Khẩu</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-gray-400 text-lg">lock</span>
+                    <input type="password" id="password" name="password" required placeholder="mật khẩu an toàn..." class="w-full pl-11 pr-4 py-2.5 bg-brand-blush/60 border border-gray-200 rounded-xl text-xs text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold transition-all">
+                </div>
+            </div>
+
+            <button type="submit" class="w-full py-3 px-4 gold-gradient text-white rounded-xl text-xs font-bold tracking-wider uppercase shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 mt-2">
+                <span>Tạo Tài Khoản Thành Viên</span>
+                <span class="material-symbols-outlined text-sm">how_to_reg</span>
+            </button>
+        </form>
+
+        <div class="text-center mt-6 pt-4 border-t border-gray-100 text-xs text-gray-400">
+            Đã có tài khoản? 
+            <a href="{{ url_for('login') }}" class="font-bold text-brand-goldDark hover:underline ml-1">Đăng nhập</a>
         </div>
-        <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">Tạo Tài Khoản</button>
-      </form>
-      <div class="text-center mt-3">
-        <span class="text-muted small">Đã có tài khoản?</span>
-        <a href="{{ url_for('login') }}" class="small ms-1 text-info text-decoration-none">Đăng nhập</a>
-      </div>
     </div>
-  </div>
 </div>
 {% endblock %}

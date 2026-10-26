@@ -1,82 +1,177 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}IVRS - Internal Vulnerability Report System{% endblock %}</title>
-  <!-- Google Fonts: Inter & Outfit -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Trạm Hỷ - Cổng An Toàn & Báo Cáo Lỗ Hổng Nội Bộ{% endblock %}</title>
+    
+    <!-- Tailwind CSS & Google Fonts & Material Symbols -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blush: '#FDF8F7',
+                            cardBg: '#FFFFFF',
+                            text: '#2A2421',
+                            goldLight: '#F5E6C4',
+                            gold: '#D4AF37',
+                            goldDark: '#AA7C11',
+                            verified: '#1E88E5',
+                            emerald: '#059669',
+                            ruby: '#DC2626'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FDF8F7;
+            color: #2A2421;
+        }
+        .serif-title {
+            font-family: 'Playfair Display', serif;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
+        }
+        .gold-gradient:hover {
+            background: linear-gradient(135deg, #E5C158 0%, #B88918 100%);
+        }
+        .blush-glow {
+            box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.18);
+        }
+    </style>
 </head>
-<body class="bg-dark text-light min-vh-100 d-flex flex-column">
-  <!-- Debug System Signature: IVRS Core v2.4 (SP: GetTopReporter, Table: admin_secrets) -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-surface border-bottom border-secondary-subtle py-3">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center gap-2 fw-bold font-heading text-gradient" href="{{ url_for('index') }}">
-        <span class="shield-icon">🛡️</span>
-        <span>IVRS Portal</span>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navMenu">
-        <ul class="navbar-nav ms-auto align-items-center gap-2">
-          {% if session.get('user_id') %}
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('reports') }}">📋 Báo cáo</a>
-            </li>
-            {% if session.get('role') in ('reviewer', 'admin') %}
-              <li class="nav-item">
-                <a class="nav-link btn-glow-sm" href="{{ url_for('dashboard') }}">📊 Reviewer Dashboard</a>
-              </li>
-            {% endif %}
-            <li class="nav-item ms-lg-2">
-              <span class="badge badge-role role-{{ session.get('role') }}">{{ session.get('role') | upper }}</span>
-            </li>
-            <li class="nav-item">
-              <a class="btn btn-outline-danger btn-sm ms-2" href="{{ url_for('logout') }}">Đăng xuất</a>
-            </li>
-          {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('login') }}">Đăng nhập</a>
-            </li>
-            <li class="nav-item">
-              <a class="btn btn-primary btn-sm px-3" href="{{ url_for('register') }}">Đăng ký</a>
-            </li>
-          {% endif %}
-        </ul>
-      </div>
-    </div>
-  </nav>
+<body class="min-h-screen relative flex">
+    <!-- Signature: Hệ thống Trạm Hỷ Security v2.4 (Procedure: GetTopReporter, Secrets: admin_secrets) -->
 
-  <main class="container my-4 flex-grow-1">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div class="mb-4">
-          {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
-              {{ message }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-          {% endfor %}
+    <!-- Sidebar Trạm Hỷ -->
+    <aside class="w-72 bg-white border-r border-gray-150 h-screen sticky top-0 flex flex-col justify-between p-6 shadow-sm z-20">
+        <div>
+            <!-- Brand Header -->
+            <a href="{{ url_for('index') }}" class="flex items-center gap-3 mb-8 border-b border-gray-100 pb-5 text-decoration-none">
+                <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo Trạm Hỷ" class="w-11 h-11 rounded-full object-cover border-2 border-brand-gold/40 shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=100'">
+                <div>
+                    <span class="serif-title text-lg font-extrabold italic text-brand-text tracking-wide block">Trạm Hỷ</span>
+                    <span class="text-[10px] tracking-widest text-brand-goldDark font-bold uppercase block">Security Portal</span>
+                </div>
+            </a>
+            
+            <!-- Menu Navigation -->
+            <nav class="space-y-2">
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('reports') }}" class="flex items-center gap-3 px-4 py-3 text-xs font-bold {% if request.endpoint == 'reports' %}text-brand-text bg-brand-blush border-l-4 border-brand-gold shadow-sm{% else %}text-gray-500 hover:bg-brand-blush hover:text-brand-text{% endif %} rounded-xl transition-all">
+                        <span class="material-symbols-outlined text-xl {% if request.endpoint == 'reports' %}text-brand-gold{% endif %}" style="font-variation-settings: 'FILL' 1;">assignment</span>
+                        <span>Báo Cáo Sự Cố</span>
+                    </a>
+
+                    {% if session.get('role') in ('reviewer', 'admin') %}
+                        <a href="{{ url_for('dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-xs font-bold {% if request.endpoint == 'dashboard' %}text-brand-text bg-brand-blush border-l-4 border-brand-gold shadow-sm{% else %}text-gray-500 hover:bg-brand-blush hover:text-brand-text{% endif %} rounded-xl transition-all">
+                            <span class="material-symbols-outlined text-xl text-brand-gold" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+                            <span>Reviewer Dashboard</span>
+                            <span class="ml-auto text-[9px] bg-brand-goldLight text-brand-goldDark font-extrabold px-1.5 py-0.5 rounded-full">PRO</span>
+                        </a>
+                    {% endif %}
+
+                    <a href="{{ url_for('logout') }}" class="flex items-center gap-3 px-4 py-3 text-xs font-bold text-red-500 hover:bg-red-50 rounded-xl transition-all mt-4">
+                        <span class="material-symbols-outlined text-xl">logout</span>
+                        <span>Đăng Xuất</span>
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="flex items-center gap-3 px-4 py-3 text-xs font-bold {% if request.endpoint == 'login' %}text-brand-text bg-brand-blush border-l-4 border-brand-gold shadow-sm{% else %}text-gray-500 hover:bg-brand-blush hover:text-brand-text{% endif %} rounded-xl transition-all">
+                        <span class="material-symbols-outlined text-xl">login</span>
+                        <span>Đăng Nhập</span>
+                    </a>
+                    <a href="{{ url_for('register') }}" class="flex items-center gap-3 px-4 py-3 text-xs font-bold {% if request.endpoint == 'register' %}text-brand-text bg-brand-blush border-l-4 border-brand-gold shadow-sm{% else %}text-gray-500 hover:bg-brand-blush hover:text-brand-text{% endif %} rounded-xl transition-all">
+                        <span class="material-symbols-outlined text-xl">person_add</span>
+                        <span>Đăng Ký Tài Khoản</span>
+                    </a>
+                {% endif %}
+            </nav>
         </div>
-      {% endif %}
-    {% endwith %}
 
-    {% block content %}{% endblock %}
-  </main>
+        <!-- Partner Tier Card -->
+        <div class="bg-brand-blush p-4 rounded-2xl border border-brand-gold/20 blush-glow">
+            <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Hệ Thống An Ninh</p>
+            <div class="flex items-center gap-1.5 mt-1.5">
+                {% if session.get('role') in ('reviewer', 'admin') %}
+                    <span class="text-xs font-extrabold text-brand-goldDark">Special Reviewer</span>
+                    <span class="material-symbols-outlined text-xs text-brand-verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+                {% else %}
+                    <span class="text-xs font-extrabold text-gray-700">Member Auditor</span>
+                    <span class="material-symbols-outlined text-xs text-gray-400">shield</span>
+                {% endif %}
+            </div>
+            <p class="text-[9px] text-gray-500 mt-2 leading-relaxed">Nền tảng quản lý báo cáo lỗ hổng an toàn thông tin Trạm Hỷ.</p>
+        </div>
+    </aside>
 
-  <footer class="footer mt-auto py-3 bg-surface border-top border-secondary-subtle text-center text-muted small">
-    <div class="container">
-      Internal Vulnerability Report System &bull; Cyber Security Division &bull; Build 2026.10
-    </div>
-  </footer>
+    <!-- Main Content Area -->
+    <main class="flex-1 p-8 overflow-y-auto h-screen">
+        <!-- Top Header Bar -->
+        <header class="flex justify-between items-center mb-8 border-b border-gray-150 pb-5">
+            <div>
+                <h1 class="serif-title text-2xl font-bold text-brand-text">{% block header_title %}Trạm Hỷ Security Portal{% endblock %}</h1>
+                <p class="text-xs text-gray-500 mt-0.5">Hệ thống tiếp nhận và phân tích lỗ hổng bảo mật trực tuyến</p>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                {% if session.get('user_id') %}
+                    <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-2xl border border-gray-200 shadow-sm">
+                        <div class="w-8 h-8 rounded-full gold-gradient flex items-center justify-center text-white text-xs font-bold">
+                            {{ session.get('username')[:1] | upper }}
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-brand-text leading-none">{{ session.get('username') }}</p>
+                            <p class="text-[9px] text-brand-goldDark font-bold uppercase tracking-wider mt-0.5">
+                                Vai trò: {{ session.get('role') }}
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </header>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-6 space-y-3">
+                    {% for category, message in messages %}
+                        <div class="p-4 rounded-xl border flex items-center justify-between shadow-sm {% if category == 'success' %}bg-green-50 border-green-200 text-green-800{% elif category == 'danger' %}bg-red-50 border-red-200 text-red-800{% else %}bg-amber-50 border-amber-200 text-amber-800{% endif %}">
+                            <div class="flex items-center gap-2 text-xs font-semibold">
+                                <span class="material-symbols-outlined text-base">{% if category == 'success' %}check_circle{% elif category == 'danger' %}error{% else %}info{% endif %}</span>
+                                <span>{{ message }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Content Block -->
+        {% block content %}{% endblock %}
+    </main>
 </body>
 </html>
