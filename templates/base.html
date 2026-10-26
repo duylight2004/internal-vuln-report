@@ -8,49 +8,29 @@
     <!-- Google Fonts: Inter, Lora (GrandSlang aesthetic), JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;1,400;1,500;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;1,400;1,500;1,600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        void: '#090909',
-                        almostWhite: '#f7f9fa',
-                        softWhite: '#f0f0f0',
-                        steel: '#828384',
-                        graphite: '#474747',
-                        iron: '#423738',
-                        signalViolet: '#FF4D85',
-                        lavenderMist: '#FFB3C6'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        serif: ['Lora', 'serif'],
-                        mono: ['JetBrains Mono', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
-    
     <style>
         :root {
-            --color-near-black: #090909;
-            --color-almost-white: #f7f9fa;
-            --color-steel: #828384;
-            --color-signal-violet: #FF4D85;
             --font-grandslang: 'Lora', serif;
             --font-mono: 'JetBrains Mono', monospace;
-            --radius-cards: 19.2px;
+            --color-gold: #FDE047;
+            --color-gold-dark: #EAB308;
+            --radius-cards: 20px;
             --radius-pills: 1584px;
         }
 
         body {
-            background-color: #090909;
-            color: #f7f9fa;
+            /* Nền đỏ sáng kết hợp ảnh nền hero-bg.jpg */
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.88) 0%, rgba(185, 28, 28, 0.92) 50%, rgba(153, 27, 27, 0.96) 100%), 
+                        url("{{ url_for('static', filename='img/hero-bg.jpg') }}");
+            background-size: cover;
+            background-position: center top;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #ffffff;
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
@@ -61,53 +41,62 @@
             font-family: 'Lora', serif;
             font-style: italic;
             font-weight: 300;
-            letter-spacing: -0.03em;
+            letter-spacing: -0.02em;
         }
 
         .mono-tag {
             font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
         }
 
+        /* Glass Cards trên nền đỏ sáng */
         .glass-card {
-            background: rgba(237, 195, 196, 0.05);
-            border: 1px solid rgba(247, 249, 250, 0.15);
-            border-radius: 19.2px;
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.25);
         }
 
         .glass-card-accent {
-            background: rgba(255, 77, 133, 0.05);
-            border: 1px solid #FF4D85;
-            border-radius: 19.2px;
-            backdrop-filter: blur(12px);
+            background: rgba(254, 240, 138, 0.18);
+            border: 1.5px solid rgba(253, 224, 71, 0.6);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.3);
         }
 
         .ghost-pill-btn {
-            background: rgba(237, 195, 196, 0.05);
-            border: 1px solid rgba(247, 249, 250, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.35);
             border-radius: 1584px;
-            padding: 10px 24px;
-            color: #f7f9fa;
-            font-size: 14px;
+            padding: 10px 22px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             transition: all 0.2s ease-in-out;
             cursor: pointer;
+            backdrop-filter: blur(10px);
         }
 
         .ghost-pill-btn:hover {
-            background: rgba(255, 77, 133, 0.15);
-            border-color: #FF4D85;
-            color: #fff;
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #ffffff;
+            color: #ffffff;
+            transform: translateY(-1px);
         }
 
-        .btn-violet {
-            background: #FF4D85;
-            color: #000;
-            font-weight: 600;
+        /* Nút bấm Vàng Hoàng Kim nổi bật trên nền đỏ Trạm Hỷ */
+        .btn-gold {
+            background: linear-gradient(135deg, #FDE047 0%, #EAB308 100%);
+            color: #1a1a1a;
+            font-weight: 700;
             border-radius: 12px;
             padding: 12px 24px;
             display: inline-flex;
@@ -117,21 +106,45 @@
             transition: all 0.2s ease-in-out;
             cursor: pointer;
             border: none;
+            box-shadow: 0 4px 15px rgba(234, 179, 8, 0.4);
         }
 
-        .btn-violet:hover {
-            background: #ff6699;
-            box-shadow: 0 0 20px rgba(255, 77, 133, 0.4);
-            color: #000;
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #FEF08A 0%, #FACC15 100%);
+            box-shadow: 0 6px 22px rgba(234, 179, 8, 0.6);
+            transform: translateY(-1px);
+            color: #000000;
+        }
+
+        /* Inputs trong form */
+        .custom-input {
+            background: rgba(255, 255, 255, 0.16) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            color: #ffffff !important;
+            border-radius: 12px;
+            padding: 12px 16px;
+            transition: all 0.2s;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: #FDE047 !important;
+            box-shadow: 0 0 0 3px rgba(253, 224, 71, 0.35) !important;
+            background: rgba(255, 255, 255, 0.22) !important;
+        }
+
+        .custom-input::placeholder {
+            color: rgba(255, 255, 255, 0.65);
         }
 
         .frosted-nav-bar {
             position: sticky;
             top: 0;
             width: 100%;
-            background: rgba(9, 9, 9, 0.85);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(247, 249, 250, 0.1);
+            background: rgba(185, 28, 28, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             z-index: 100;
         }
     </style>
@@ -140,47 +153,47 @@
     <!-- Signature: Trạm Hỷ Core v2.4 (SP: GetTopReporter, Table: admin_secrets) -->
 
     <!-- Frosted Top Navigation Bar -->
-    <header class="frosted-nav-bar py-4">
+    <header class="frosted-nav-bar py-4 shadow-md">
         <div class="max-w-[1200px] mx-auto px-6 flex justify-between items-center">
             <!-- Brand -->
             <a href="{{ url_for('index') }}" class="flex items-center gap-3 group">
-                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Trạm Hỷ Logo" class="w-10 h-10 rounded-full object-cover border border-[#FF4D85]/40 group-hover:scale-105 transition-transform" onerror="this.src='{{ url_for('static', filename='img/logo.jpg') }}'">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Trạm Hỷ Logo" class="w-11 h-11 rounded-full object-cover border-2 border-yellow-300 shadow-md group-hover:scale-105 transition-transform" onerror="this.src='{{ url_for('static', filename='img/logo.jpg') }}'">
                 <div>
-                    <span class="stamped-heading text-2xl font-bold tracking-tight text-white block leading-none">Trạm Hỷ</span>
-                    <span class="mono-tag text-[9px] text-[#FF4D85] font-semibold block mt-1">SECURITY AUDIT</span>
+                    <span class="stamped-heading text-2xl font-bold tracking-tight text-white block leading-none drop-shadow">Trạm Hỷ</span>
+                    <span class="mono-tag text-[9px] text-yellow-300 font-bold block mt-1 tracking-widest">SECURITY AUDIT PORTAL</span>
                 </div>
             </a>
 
             <!-- Navigation Links -->
             <nav class="flex items-center gap-3">
                 {% if session.get('user_id') %}
-                    <a href="{{ url_for('reports') }}" class="ghost-pill-btn {% if request.endpoint == 'reports' %}!border-[#FF4D85] !text-[#FF4D85] bg-[#FF4D85]/10{% endif %}">
+                    <a href="{{ url_for('reports') }}" class="ghost-pill-btn {% if request.endpoint == 'reports' %}!bg-white !text-red-700 shadow-md{% endif %}">
                         <span class="material-symbols-outlined text-base">assignment</span>
                         <span>Báo Cáo Sự Cố</span>
                     </a>
 
                     {% if session.get('role') in ('reviewer', 'admin') %}
-                        <a href="{{ url_for('dashboard') }}" class="ghost-pill-btn !border-[#FF4D85] !text-[#FF4D85] bg-[#FF4D85]/10 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-base">monitoring</span>
+                        <a href="{{ url_for('dashboard') }}" class="ghost-pill-btn !border-yellow-300 !text-yellow-200 bg-yellow-400/20 flex items-center gap-2 shadow-sm">
+                            <span class="material-symbols-outlined text-base text-yellow-300">monitoring</span>
                             <span>Reviewer Dashboard</span>
-                            <span class="text-[9px] bg-[#FF4D85] text-black font-bold px-1.5 py-0.2 rounded-full uppercase">VIP</span>
+                            <span class="text-[9px] bg-yellow-300 text-red-900 font-extrabold px-1.5 py-0.2 rounded-full uppercase">VIP</span>
                         </a>
                     {% endif %}
 
-                    <div class="flex items-center gap-3 ml-2 pl-3 border-l border-white/10">
+                    <div class="flex items-center gap-3 ml-2 pl-3 border-l border-white/20">
                         <div class="text-right">
-                            <span class="text-xs font-semibold text-white block leading-none">{{ session.get('username') }}</span>
-                            <span class="text-[9px] mono-tag text-[#FF4D85] block mt-0.5">{{ session.get('role') }}</span>
+                            <span class="text-xs font-bold text-white block leading-none">{{ session.get('username') }}</span>
+                            <span class="text-[10px] mono-tag text-yellow-300 font-bold block mt-0.5">{{ session.get('role') | upper }}</span>
                         </div>
-                        <a href="{{ url_for('logout') }}" class="w-8 h-8 rounded-full bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 border border-white/10 flex items-center justify-center transition-all" title="Đăng xuất">
+                        <a href="{{ url_for('logout') }}" class="w-9 h-9 rounded-full bg-black/20 hover:bg-black/40 text-white border border-white/20 flex items-center justify-center transition-all" title="Đăng xuất">
                             <span class="material-symbols-outlined text-sm">logout</span>
                         </a>
                     </div>
                 {% else %}
-                    <a href="{{ url_for('login') }}" class="ghost-pill-btn {% if request.endpoint == 'login' %}!border-[#FF4D85] !text-[#FF4D85]{% endif %}">
+                    <a href="{{ url_for('login') }}" class="ghost-pill-btn {% if request.endpoint == 'login' %}!bg-white !text-red-700{% endif %}">
                         <span>Đăng Nhập</span>
                     </a>
-                    <a href="{{ url_for('register') }}" class="btn-violet text-xs !py-2.5 !px-5">
+                    <a href="{{ url_for('register') }}" class="btn-gold text-xs !py-2.5 !px-5">
                         <span>Đăng Ký Tài Khoản</span>
                     </a>
                 {% endif %}
@@ -195,7 +208,7 @@
             {% if messages %}
                 <div class="mb-8 space-y-3">
                     {% for category, message in messages %}
-                        <div class="p-4 rounded-xl border flex items-center justify-between text-xs font-medium backdrop-blur-md {% if category == 'success' %}bg-emerald-950/40 border-emerald-500/40 text-emerald-200{% elif category == 'danger' %}bg-rose-950/40 border-rose-500/40 text-rose-200{% else %}bg-purple-950/40 border-[#FF4D85]/40 text-pink-200{% endif %}">
+                        <div class="p-4 rounded-xl border flex items-center justify-between text-xs font-semibold backdrop-blur-md shadow-lg {% if category == 'success' %}bg-emerald-900/60 border-emerald-400 text-emerald-100{% elif category == 'danger' %}bg-rose-950/70 border-rose-400 text-rose-100{% else %}bg-amber-900/60 border-yellow-300 text-yellow-100{% endif %}">
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-base">{% if category == 'success' %}check_circle{% elif category == 'danger' %}error{% else %}info{% endif %}</span>
                                 <span>{{ message }}</span>
@@ -210,13 +223,13 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/10 py-8 mt-auto">
-        <div class="max-w-[1200px] mx-auto px-6 flex justify-between items-center text-xs text-[#828384]">
+    <footer class="border-t border-white/20 py-8 mt-auto bg-black/20 backdrop-blur-md">
+        <div class="max-w-[1200px] mx-auto px-6 flex justify-between items-center text-xs text-red-100/80">
             <div class="flex items-center gap-2">
-                <span class="stamped-heading text-lg text-white">Trạm Hỷ</span>
-                <span>&bull; Nền tảng bảo chứng an toàn & kiểm toán nội bộ</span>
+                <span class="stamped-heading text-lg text-white font-bold">Trạm Hỷ</span>
+                <span>&bull; Nền tảng bảo chứng giao dịch cưới hỏi & kiểm toán an toàn nội bộ</span>
             </div>
-            <div class="mono-tag text-[10px]">
+            <div class="mono-tag text-[10px] text-yellow-300 font-bold">
                 BUILD 2026.10 &bull; SECURITY DIVISION
             </div>
         </div>

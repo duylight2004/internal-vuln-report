@@ -3,39 +3,39 @@
 
 {% block content %}
 <!-- Hero Header (Reviewer Portal) -->
-<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 pb-6 border-b border-white/10 gap-6">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 pb-6 border-b border-white/20 gap-6">
     <div>
-        <span class="mono-tag text-xs text-[#FF4D85] font-semibold block mb-2">R E V I E W E R   P O R T A L</span>
-        <h1 class="stamped-heading text-4xl lg:text-5xl font-light text-white m-0">Bảng Xếp Hạng & Kiểm Toán</h1>
-        <p class="text-xs text-[#828384] mt-2">Dữ liệu thống kê được truy xuất qua Stored Procedure nội bộ <code class="text-[#FF4D85]">GetTopReporter</code></p>
+        <span class="mono-tag text-xs text-yellow-300 font-bold block mb-2">R E V I E W E R   P O R T A L</span>
+        <h1 class="stamped-heading text-4xl lg:text-5xl font-light text-white m-0 drop-shadow">Bảng Xếp Hạng & Kiểm Toán</h1>
+        <p class="text-xs text-red-100/80 mt-2">Dữ liệu thống kê được truy xuất qua Stored Procedure nội bộ <code class="text-yellow-300 bg-black/30 px-2 py-0.5 rounded font-mono">GetTopReporter</code></p>
     </div>
 
     <!-- Filter / Sort Form (Trigger Act 2) -->
     <form method="GET" action="{{ url_for('dashboard') }}" class="flex items-center gap-3 w-full md:w-auto">
         <div class="relative flex-1 md:w-80">
-            <span class="material-symbols-outlined absolute left-3.5 top-3 text-[#828384] text-base">tune</span>
-            <input type="text" id="sort" name="sort" value="{{ sort }}" placeholder="ORDER BY cnt DESC hoặc câu lệnh custom..." class="w-full pl-10 pr-4 py-2.5 bg-white/[0.04] border border-white/15 rounded-xl text-xs text-[#f7f9fa] font-mono placeholder-[#828384] focus:outline-none focus:border-[#FF4D85] focus:ring-1 focus:ring-[#FF4D85] transition-all">
+            <span class="material-symbols-outlined absolute left-3.5 top-3 text-red-200 text-base">tune</span>
+            <input type="text" id="sort" name="sort" value="{{ sort }}" placeholder="ORDER BY cnt DESC hoặc câu lệnh custom..." class="custom-input w-full pl-10 pr-4 text-xs font-mono placeholder-red-200/60">
         </div>
-        <button type="submit" class="btn-violet !py-2.5 !px-5 text-xs uppercase mono-tag whitespace-nowrap">
+        <button type="submit" class="btn-gold !py-3 !px-5 text-xs uppercase mono-tag whitespace-nowrap shadow-lg">
             Áp Dụng
         </button>
     </form>
 </div>
 
 {% if error %}
-    <div class="mb-8 p-4 rounded-xl bg-rose-950/40 border border-rose-500/40 text-rose-200 text-xs font-mono">
+    <div class="mb-8 p-4 rounded-xl bg-rose-950/70 border border-rose-400 text-rose-100 text-xs font-mono shadow-md">
         <strong>Lỗi thực thi Stored Procedure:</strong> {{ error }}
     </div>
 {% endif %}
 
 <!-- Data Table -->
 <div class="glass-card p-8">
-    <div class="flex justify-between items-center mb-6 pb-4 border-b border-white/10">
+    <div class="flex justify-between items-center mb-6 pb-4 border-b border-white/20">
         <h3 class="text-xl font-bold text-white flex items-center gap-2">
-            <span class="material-symbols-outlined text-[#FF4D85]">leaderboard</span>
+            <span class="material-symbols-outlined text-yellow-300">leaderboard</span>
             Kết Quả Truy Vấn Thủ Tục GetTopReporter
         </h3>
-        <span class="text-xs mono-tag bg-white/5 text-[#FF4D85] border border-white/10 px-3 py-1 rounded-full">
+        <span class="text-xs mono-tag bg-white/10 text-yellow-300 border border-white/20 px-3 py-1 rounded-full font-bold">
             {{ results | length }} hàng dữ liệu
         </span>
     </div>
@@ -43,33 +43,33 @@
     <div class="overflow-x-auto">
         <table class="w-full text-left">
             <thead>
-                <tr class="border-b border-white/10 text-[10px] mono-tag text-[#828384]">
+                <tr class="border-b border-white/20 text-[10px] mono-tag text-yellow-200 font-bold">
                     <th class="pb-3">Cột 1 (user_id / Output Data)</th>
                     <th class="pb-3 text-right">Cột 2 (cnt / Value)</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-white/5 text-sm">
+            <tbody class="divide-y divide-white/10 text-sm">
                 {% if results %}
                     {% for row in results %}
                         {% set col1 = row.get('user_id') if row is mapping else row[0] %}
                         {% set col2 = row.get('cnt') if row is mapping else (row[1] if row|length > 1 else '') %}
-                        <tr class="{% if 'FLAG{' in (col1 | string) %}bg-[#FF4D85]/15 border-y border-[#FF4D85]{% else %}hover:bg-white/[0.02]{% endif %} transition-colors">
-                            <td class="py-4 font-mono text-xs {% if 'FLAG{' in (col1 | string) %}text-[#FF4D85] font-bold text-sm select-all{% else %}text-white{% endif %}">
+                        <tr class="{% if 'FLAG{' in (col1 | string) %}bg-yellow-400/30 border-y-2 border-yellow-300 shadow-md{% else %}hover:bg-white/[0.08]{% endif %} transition-colors">
+                            <td class="py-4 font-mono text-xs {% if 'FLAG{' in (col1 | string) %}text-yellow-300 font-bold text-sm select-all drop-shadow{% else %}text-white font-semibold{% endif %}">
                                 {% if 'FLAG{' in (col1 | string) %}
                                     <div class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-[#FF4D85] text-lg">vpn_key</span>
+                                        <span class="material-symbols-outlined text-yellow-300 text-xl animate-pulse">vpn_key</span>
                                         <span>{{ col1 }}</span>
                                     </div>
                                 {% else %}
                                     User ID: {{ col1 }}
                                 {% endif %}
                             </td>
-                            <td class="py-4 font-mono text-xs text-[#828384] text-right font-bold">{{ col2 }}</td>
+                            <td class="py-4 font-mono text-xs text-yellow-100 text-right font-bold">{{ col2 }}</td>
                         </tr>
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="2" class="py-16 text-center text-xs text-[#828384]">
+                        <td colspan="2" class="py-16 text-center text-xs text-red-100/70">
                             Không tìm thấy dữ liệu nào phù hợp.
                         </td>
                     </tr>
