@@ -31,6 +31,6 @@ INSERT INTO admin_secrets (id, flag) VALUES (1, 'FLAG{st0r3d_pr0c3dur3_1nj3ct10n
 
 -- Seed admin account
 INSERT INTO users (username, password_hash, role) VALUES
-  ('admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'admin');
+  ('admin', '0b2d108015cd06fb2cfeb8a6f54bef9197f915842ac8820ba46e4182e552833a', 'admin');
 
 DROP PROCEDURE IF EXISTS GetTopReporter;

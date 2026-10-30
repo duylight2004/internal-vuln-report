@@ -46,10 +46,13 @@ Yêu cầu máy tính đã cài đặt **Docker** và **Docker Compose**:
 git clone https://github.com/duylight2004/internal-vuln-report.git
 cd internal-vuln-report
 
-# 2. Khởi động môi trường challenge
+# 2. Tạo SECRET_KEY ngẫu nhiên (bắt buộc, file .env đã được gitignore)
+python -c "import secrets; print('SECRET_KEY=' + secrets.token_hex(32))" > .env
+
+# 3. Khởi động môi trường challenge
 docker compose up --build -d
 
-# 3. Mở trình duyệt và truy cập:
+# 4. Mở trình duyệt và truy cập:
 # http://localhost:5001
 ```
 

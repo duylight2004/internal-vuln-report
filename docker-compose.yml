@@ -24,7 +24,7 @@ services:
       DB_USER: ctf_user
       DB_PASS: ctf_pass
       DB_NAME: vuln_report
-      SECRET_KEY: ctf-secret-key-change-me-789a4b
+      SECRET_KEY: "${SECRET_KEY:?SECRET_KEY must be set in .env or environment}"
     depends_on:
       db:
         condition: service_healthy
