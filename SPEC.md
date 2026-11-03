@@ -85,3 +85,5 @@
        SET sortCol = 'cnt';
      END IF;
      ```
+
+> Hướng dẫn khắc phục đầy đủ và checklist kiểm chứng: **[docs/REMEDIATION.md](docs/REMEDIATION.md)**.

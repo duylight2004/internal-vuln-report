@@ -1,0 +1,16 @@
+.git
+.gitignore
+.gitattributes
+.env
+__pycache__/
+**/__pycache__/
+*.pyc
+*.log
+db_data/
+exploits/
+docs/
+CHALLENGE.md
+SPEC.md
+README.md
+docker-compose.yml
+render.yaml

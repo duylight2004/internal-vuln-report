@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: internal-vuln-report
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /login
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DB_PASS
+        generateValue: true

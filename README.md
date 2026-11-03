@@ -63,6 +63,21 @@ docker compose down -v
 
 ---
 
+## ☁️ Deploy Lên Render (Miễn Phí)
+
+Repo đã có sẵn `render.yaml` và Dockerfile **tự chứa MariaDB** (MariaDB chạy cùng container với web app), nên không cần database service riêng:
+
+1. Push code lên GitHub.
+2. Vào [Render Dashboard](https://dashboard.render.com) &rarr; **New** &rarr; **Blueprint** &rarr; chọn repo &rarr; **Apply**.
+3. Render tự build Docker image, tạo `SECRET_KEY` ngẫu nhiên và expose web service.
+4. Truy cập `https://<service-name>.onrender.com`.
+
+Nếu tạo thủ công (**New** &rarr; **Web Service** &rarr; **Docker**), bắt buộc đặt biến môi trường `SECRET_KEY`.
+
+> **Lưu ý gói Free:** ổ đĩa là tạm thời nên dữ liệu MariaDB (tài khoản, báo cáo) sẽ reset sau mỗi lần restart/ngủ đông. Request đầu tiên sau khi ngủ đông có thể mất 30–60 giây để khởi động lại.
+
+---
+
 ## 🎯 Chuỗi Khai Thác 2 Giai Đoạn (2-Act Attack Chain)
 
 | Act | Tên Lỗ Hổng | Bề Mặt Tấn Công | Mục Tiêu & Kết Quả |
@@ -107,6 +122,7 @@ python exploits/solve_all.py http://localhost:5001
 - 📜 **[CHALLENGE.md](CHALLENGE.md):** Đề bài chi tiết dành cho người chơi (bối cảnh SOC/Red Team, không spoil đáp án).
 - 🔍 **[SPEC.md](SPEC.md):** Tài liệu phân tích kỹ thuật, nguyên nhân gốc rễ (Root Cause) và hướng dẫn giải (Walkthrough) cho ban giám khảo / tác giả.
 - 💡 **[exploits/README.md](exploits/README.md):** Chi tiết phân tích kỹ thuật từng payload khai thác.
+- 🛠️ **[docs/REMEDIATION.md](docs/REMEDIATION.md):** Hướng dẫn khắc phục đầy đủ (Act 1, Act 2 và hardening bổ sung) kèm checklist kiểm chứng.
 
 ---
 
@@ -114,3 +130,5 @@ python exploits/solve_all.py http://localhost:5001
 
 1. **Khắc phục Act 1:** Luôn sử dụng Parameterized Query ngay cả khi dữ liệu được trích xuất từ cơ sở dữ liệu nội bộ (chống Second-Order SQLi). Tắt cờ `CLIENT.MULTI_STATEMENTS` ở tầng driver nếu không thực sự cần thiết.
 2. **Khắc phục Act 2:** Trong Stored Procedure, áp dụng Whitelist kiểm tra giá trị tham số sắp xếp (`IF sortCol NOT IN ('cnt', 'user_id') THEN ...`) trước khi ghép vào câu lệnh chuẩn bị (`PREPARE stmt`).
+
+Chi tiết đầy đủ (kèm code vá, least privilege DB, CSRF, password hashing, logging và checklist kiểm chứng): xem **[docs/REMEDIATION.md](docs/REMEDIATION.md)**.

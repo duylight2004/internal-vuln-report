@@ -18,12 +18,14 @@ def get_db():
     # ponytail: connection scoped per request with multi-statement enabled for export
     if 'db' not in g:
         g.db = pymysql.connect(
-            host=os.environ.get('DB_HOST', 'localhost'),
+            host=os.environ.get('DB_HOST', '127.0.0.1'),
+            port=int(os.environ.get('DB_PORT', 3306)),
             user=os.environ.get('DB_USER', 'ctf_user'),
             password=os.environ.get('DB_PASS', 'ctf_pass'),
             database=os.environ.get('DB_NAME', 'vuln_report'),
             client_flag=CLIENT.MULTI_STATEMENTS,  # Required for stacked query in Act 1
             cursorclass=pymysql.cursors.DictCursor,
+            connect_timeout=10,
             autocommit=True
         )
     return g.db
@@ -222,4 +224,4 @@ def dashboard():
     return render_template('dashboard.html', results=results, sort=sort_param, error=error)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=False)
