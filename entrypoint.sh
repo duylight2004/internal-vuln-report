@@ -10,13 +10,13 @@ PORT="${PORT:-5000}"
 export DB_HOST DB_PORT DB_USER DB_PASS DB_NAME PORT
 
 start_embedded_mariadb() {
-    echo "[*] Starting embedded MariaDB..."
+    echo "[*] Starting embedded MariaDB ($(mariadbd --version))..."
     mkdir -p /run/mysqld
     chown mysql:mysql /run/mysqld
 
     if [ ! -d /var/lib/mysql/mysql ]; then
         echo "[*] Initializing MariaDB data directory..."
-        mariadb-install-db --user=mysql --datadir=/var/lib/mysql >/dev/null 2>&1
+        mariadb-install-db --user=mysql --datadir=/var/lib/mysql
     fi
     chown -R mysql:mysql /var/lib/mysql
 
@@ -42,7 +42,10 @@ start_embedded_mariadb() {
             break
         fi
         if ! kill -0 "${MARIADB_PID}" 2>/dev/null; then
-            echo "[-] MariaDB exited during startup."
+            MARIADB_STATUS=0
+            wait "${MARIADB_PID}" 2>/dev/null || MARIADB_STATUS=$?
+            echo "[-] MariaDB exited during startup (exit code ${MARIADB_STATUS})."
+            ls -la /var/lib/mysql
             exit 1
         fi
         sleep 1
@@ -150,7 +153,7 @@ echo "[*] Starting Internal Vulnerability Report System on port ${PORT}..."
 exec gunicorn \
     --chdir src \
     --bind "0.0.0.0:${PORT}" \
-    --workers "${WEB_WORKERS:-2}" \
+    --workers "${WEB_CONCURRENCY:-2}" \
     --threads "${WEB_THREADS:-2}" \
     --timeout 60 \
     app:app

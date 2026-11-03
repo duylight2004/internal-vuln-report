@@ -1,19 +1,17 @@
-FROM python:3.12-slim
+FROM mariadb:10.11.11
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DEBIAN_FRONTEND=noninteractive
 
-RUN printf '#!/bin/sh\nexit 101\n' > /usr/sbin/policy-rc.d \
-    && chmod +x /usr/sbin/policy-rc.d \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends mariadb-server mariadb-client \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3 python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY src/ ./src/
 COPY templates/ ./templates/

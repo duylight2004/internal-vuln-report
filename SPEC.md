@@ -11,7 +11,7 @@
        │
        ▼ (HTTP Port 5001 -> Container 5000)
 ┌──────────────────────────────────────────────┐
-│ Flask Web Application (Python 3.12)          │
+│ Flask Web Application (Python 3.10+)         │
 │ - PyMySQL with CLIENT.MULTI_STATEMENTS       │
 │ - Parameterized Insert at /register          │
 │ - String Concatenation SQL at /export        │
