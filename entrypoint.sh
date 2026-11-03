@@ -56,7 +56,8 @@ start_embedded_mariadb() {
         exit 1
     fi
 
-    mariadb --socket=/run/mysqld/mysqld.sock -uroot <<SQL
+    echo "[*] Creating database and application user..."
+    timeout 30 mariadb --socket=/run/mysqld/mysqld.sock -uroot <<SQL
 CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;
 CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}';
 ALTER USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}';
